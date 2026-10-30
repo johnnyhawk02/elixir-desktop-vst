@@ -1,0 +1,5 @@
+{
+  "name": "Elixir Desktop", "target": "ElixirDesktop", "code": "Elxd", "type": "instrument", "version": "1.0.0",
+  "description": "Elixir Desktop (the laptop drum machine on the LXR-02 engine) as a VST3: C++ engine, the app's page as the UI in a web view",
+  "params": []
+}

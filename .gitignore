@@ -1,0 +1,4 @@
+/build/
+**/proto/renders/
+*.wav
+.DS_Store

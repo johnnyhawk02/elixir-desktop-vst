@@ -1,0 +1,3 @@
+/* Elixir Desktop VST3: the DAW records, so no record buttons; the page fills the plugin window */
+#m-rec, #m-loop { display: none !important; }
+html, body { overscroll-behavior: none; }
