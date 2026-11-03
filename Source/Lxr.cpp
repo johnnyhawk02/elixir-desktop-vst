@@ -496,7 +496,22 @@ static const double PP_MAX = f(FX_BUFFER_SIZE * f(0.48));
 static const double TONE_C0 = 0.06537948995454451662, TONE_C1 = 0.92410701734426630737;
 static const double SLEW_MAX = 6.79655641141821477118;
 
-static inline double toHalf(double x) { return (double) (float) (_Float16) (float) x; }
+// rounded to a half float (round to nearest even), as lxr.js's toHalf (no _Float16 on every compiler)
+static double toHalf(double x) {
+    const double a = std::fabs(x);
+    if (a == 0) return x;
+    // half subnormals have a fixed quantum of 2^-24, normals 11 significant bits
+    const int e = a < 6.103515625e-5 ? -14 : (int) std::floor(std::log2(a));
+    int ee = e;
+    if (a >= 6.103515625e-5) { if (std::ldexp(1.0, ee) > a) ee--; else if (std::ldexp(1.0, ee + 1) <= a) ee++; }
+    const double q = std::ldexp(1.0, ee - 10);
+    const double m = a / q;
+    double r = std::floor(m);
+    const double d = m - r;
+    if (d > 0.5 || (d == 0.5 && ((long long) r & 1))) r++;
+    const double v = r * q;
+    return x < 0 ? -v : v;
+}
 static inline int dryWetMix(int dry, int wet, double dryWet) { return wrap16(dry + ssat16(toI32(f((wet - dry) * dryWet)))); }
 
 static double diode(double x) {
