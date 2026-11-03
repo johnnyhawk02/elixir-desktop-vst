@@ -16,7 +16,13 @@ All versions: https://github.com/johnnyhawk02/elixir-desktop-vst/releases
 
 ## Install on Mac
 
-Unzip, then move the file to:
+The quickest way: paste this into Terminal. It installs the newest VST3, Audio Unit, CLAP and app, and macOS won't block them.
+
+```
+curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash
+```
+
+Or install by hand: unzip, then move the file to:
 
 | Format | Folder |
 |---|---|
