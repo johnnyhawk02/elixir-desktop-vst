@@ -59,7 +59,7 @@ static inline uint32_t freq2PhaseIncr(double x) { return toU32(f(f(f(4096 * x) /
 static inline uint32_t freq2PhaseIncr1024(double x) { return toU32(f(f(f(1024 * x) / REAL_FS) * 4194304)); }
 static inline uint32_t freq2PhaseIncr32767(double x) { return toU32(f(f(f(1024 * x) / REAL_FS) * 131072)); }
 
-static int clz32(uint32_t x) { return x ? __builtin_clz(x) : 32; }
+static int clz32(uint32_t x) { int n = 32; while (x) { x >>= 1; n--; } return n; }
 static int freqToTableIndex(double fr) {
     const int log2 = (31 - clz32(toU32(f(fr / 440)))) & 0xff;
     const int midiNote = 12 * log2 + 70;

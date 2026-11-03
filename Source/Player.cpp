@@ -96,6 +96,7 @@ void Player::apply(const Msg& m) {
                 if (m.hasVerb) for (int i = 0; i < 4; i++) verb.setParameter(i, m.verb[i] / 127);
                 std::memcpy(sendD, m.sendD, sizeof(sendD)); std::memcpy(sendR, m.sendR, sizeof(sendR));
                 echoWidth = m.echoPct / 100;
+                echoSync = m.echoSync; echoFree = m.echoFree; echoFine = m.echoFine;
             }
             std::memcpy(fxAmt, m.fx, sizeof(fxAmt));
             break;
@@ -294,7 +295,8 @@ void Player::render(float (*dst)[64]) {
     const Master& M = master; const int16_t* k = e.out[0];
     const bool isDelay = e.fx.fxType == FX_DELAY;
     e.fx.forceWet = isDelay;
-    e.fx.setDelaySync(isDelay, isDelay ? delaySamples(delayPos, bpm) : 0);
+    const double eTime = echoSync ? delaySamples(delayPos, bpm) : (1 + 1999 * echoFree) / 1000 * REAL_FS;
+    e.fx.setDelaySync(isDelay, isDelay ? eTime * (1 + echoFine / 10000) : 0);
     double pk = 0;
     for (int i = 0; i < 64; i++) pk = std::max(pk, (double) std::abs(k[i]));
     pk = pk / 32768 * gainTo[0];

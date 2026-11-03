@@ -80,5 +80,6 @@
       else onEvent(ev);
     }
   });
+  elixirPluginHelp(HELP);
   emit({ t: 'ready' });
 })();

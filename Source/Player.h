@@ -30,7 +30,7 @@ struct Msg {
     // mix
     bool hasMaster = false; double master[11] {}; uint16_t masterMask = 0; // in Master field order
     float fx[6] {}; bool hasDist = false; int distType = 0; double distP[4] {}; double distMix = 0;
-    bool hasVerb = false; double verb[4] {}; float sendD[6] {}, sendR[6] {}; double echoPct = 100;
+    bool hasVerb = false; double verb[4] {}; float sendD[6] {}, sendR[6] {}; double echoPct = 100; bool echoSync = true; double echoFree = 0.25, echoFine = 0;
     // seq
     Page pages[MAX_PAGES]; int nPages = 0;                   // nPages 0: one pattern in pages[0]
     bool patternOn = true, hasGroove = false, playing = false; double bpm = 120, groove[7][16] {}, vel_ = 100, accentDb = 0;
@@ -78,7 +78,7 @@ private:
     bool hpOn = false; double hpLog, hpMix = 0, hpG = 0, hpS[4] {};
     Master master;
     double spF[8]; double spS[48] {}; float spEnv[8] {}, spG[8]; float spL[64] {}, spR[64] {}, spKey[64] {}; bool spOn = false;
-    double delayPos;
+    double delayPos; bool echoSync = true; double echoFree = 0.25, echoFine = 0;
     FxBus dist; ReverbBus verb; Rng fxRng { 0x2545f491u };
     float sendD[6] {}, sendR[6] {}; double echoWidth = 1;
     double distMix = 0, distAt = 0;

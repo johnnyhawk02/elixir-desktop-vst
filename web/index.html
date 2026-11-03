@@ -1150,7 +1150,7 @@ body { padding: max(6px, env(safe-area-inset-top, 0px)) max(6px, env(safe-area-i
 .m-fx-card { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 8px; min-height: 0; padding: 8px 2px; }
 /* the fx page: echo and ring mod side by side (five faders and three), taking what the crossfeed matrix under them leaves */
 [data-m-panel="fx"] .m-fx-card { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: 0; }
-#m-fx-echo { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+#m-fx-echo { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 #m-fx-ring { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 [data-m-panel="fx"] .m-fx-row + .m-fx-row { border-top: 0; padding-top: 0; border-left: var(--rule); padding-left: 4px; margin-left: 4px; }
 [data-m-panel="fx"] .m-fx-row.m-xrow { grid-column: 1 / -1; border-left: 0; padding-left: 0; margin-left: 0; border-top: var(--rule); padding-top: 6px; }
@@ -1532,7 +1532,8 @@ body { padding: max(6px, env(safe-area-inset-top, 0px)) max(6px, env(safe-area-i
   [data-m-panel="fx"] .m-fx-row.m-fx-slot { display: grid; border-top: var(--rule); padding-top: 8px; }
   [data-m-panel="fx"] .m-fx-empty { border: 1.5px dashed var(--ghost); border-radius: 4px; display: grid; place-items: center; color: var(--muted); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .08em; }
   #m [data-m-panel="fx"] #m-fx-echo > .m-vf:first-child, #m [data-m-panel="fx"] #m-fx-ring > .m-vf:first-child { display: none; }
-  #m-fx-echo, #m-fx-ring { grid-template-columns: repeat(4, minmax(0, 1fr)); min-height: 0; }
+  #m-fx-echo { grid-template-columns: repeat(5, minmax(0, 1fr)); min-height: 0; }
+  #m-fx-ring { grid-template-columns: repeat(4, minmax(0, 1fr)); min-height: 0; }
   .m-fx-slot { display: none; }
   [data-m-panel="fx"] .m-fx-slot { display: grid; }
   .m > .m-tabs button[data-m-tab="xf"] { display: block; }
@@ -1587,7 +1588,7 @@ html, body { overscroll-behavior: none; }
 
 <main class="m" id="m">
   <header class="m-top">
-    <b class="m-title" id="m-title"><span class="m-title-long">elixir</span><span class="m-title-short" aria-hidden="true"></span><small class="m-ver"><i class="m-ver-v">v</i>199</small></b>
+    <b class="m-title" id="m-title"><span class="m-title-long">elixir</span><span class="m-title-short" aria-hidden="true"></span><small class="m-ver"><i class="m-ver-v">v</i>200</small></b>
     <button class="m-toggle m-setbtn m-optsbtn" id="m-opts" type="button" aria-label="Options">options</button>
     <button class="m-toggle m-setbtn m-userbtn" id="m-user-open" type="button" aria-label="User settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></button>
     <button class="m-toggle m-setbtn" id="m-set-open" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
@@ -1638,7 +1639,7 @@ html, body { overscroll-behavior: none; }
 
   <div class="m-panel" data-m-panel="fx">
     <section class="m-card m-fx-card">
-      <div class="m-fx-row"><div class="m-fxhead"><b>echo</b><label class="m-chk"><input id="m-pp" type="checkbox"><i aria-hidden="true"></i>ping pong</label></div><div class="m-faders" id="m-fx-echo"></div></div>
+      <div class="m-fx-row"><div class="m-fxhead"><b>echo</b><label class="m-chk"><input id="m-pp" type="checkbox"><i aria-hidden="true"></i>ping pong</label><label class="m-chk"><input id="m-sync" type="checkbox" checked><i aria-hidden="true"></i>sync</label></div><div class="m-faders" id="m-fx-echo"></div></div>
       <div class="m-fx-row"><b>reverb</b><div class="m-faders" id="m-fx-ring"></div></div>
       <div class="m-fx-row m-fx-slot"><b>insert</b><div class="m-fx-empty">empty slot</div></div>
       <div class="m-fx-row m-fx-slot"><b>insert</b><div class="m-fx-empty">empty slot</div></div>
@@ -1682,7 +1683,7 @@ html, body { overscroll-behavior: none; }
         <button class="m-btn" id="m-pexport" type="button" title="Saves your presets, the built-in ones you saved over and every starred one, to a file">export presets</button>
         <button class="m-btn m-install" id="m-install" type="button" hidden>install app</button>
       </div>
-      <footer class="m-foot">Erica Synths LXR-02 port, GPL-3.0, unofficial<br><a href="help.html">Help</a> · <a href="https://github.com/johnnyhawk02/elixir-desktop">Source</a> · v199, 30 Oct, 18:58</footer>
+      <footer class="m-foot">Erica Synths LXR-02 port, GPL-3.0, unofficial<br><a href="help.html">Help</a> · <a href="https://github.com/johnnyhawk02/elixir-desktop">Source</a> · v200, 3 Nov, 00:10</footer>
     </section>
   </div>
   </div>
@@ -5743,6 +5744,7 @@ class Player {
     // delay: tempo-synced time, 0 = 1/128 .. 1 = one bar, and run as a send effect (all wet,
     // the voices keep their dry path); not in the firmware
     this.delayPos = 1 + Math.log2(3 / 16) / 7;
+    this.echoSync = true; this.echoFree = 0.25; this.echoFine = 0;
     // two more of the firmware's FX: the reverb (written for it but never switched on) as the second send bus (wet only, the
     // voices keep their dry path; the engine's own FX bus is the echo), and in Elixir Mobile the distortion as an insert
     // on the whole mix, before the compressor. (Send 2 was the ring mod; its sends, sendR, now feed the reverb)
@@ -5776,6 +5778,9 @@ class Player {
         this.distMix = (m.dist.mix || 0) / 100;
         if (m.verb) ['time', 'decay', 'tone', 'early'].forEach((k, i) => this.verb.setParameter(i, m.verb[k] / 127));
         this.sendD.set(m.sendD); this.sendR.set(m.sendR); this.echoWidth = m.echo.pct / 100;
+        // the echo's time: tempo-synced (the position, as before) or free (milliseconds, 1..2000, linear in the TIME knob); fine
+        // tunes either by up to 1% (-100..100 hundredths of a percent)
+        this.echoSync = m.echo.sync !== false; this.echoFree = m.echo.free ?? 0.25; this.echoFine = m.echo.fine || 0;
       } this.fxAmt.set(m.fx); }
     else if (m.type === 'rec') {
       // recorder: free starts now; a loop waits for the first step of a bar and stops after its bars
@@ -5976,7 +5981,8 @@ class Player {
     const M = this.master, k = out[0];
     const isDelay = e.fx.fxType === LXR.FX_DELAY;
     e.fx.forceWet = isDelay;
-    e.fx.setDelaySync(isDelay ? delaySamples(this.delayPos, this.bpm) : null);
+    const eTime = this.echoSync ? delaySamples(this.delayPos, this.bpm) : (1 + 1999 * this.echoFree) / 1000 * LXR.REAL_FS;
+    e.fx.setDelaySync(isDelay ? eTime * (1 + this.echoFine / 10000) : null);
     let pk = 0;
     for (let i = 0; i < 64; i++) pk = Math.max(pk, Math.abs(k[i]));
     pk = pk / 32768 * this.gainTo[0];
@@ -7742,7 +7748,7 @@ const CH = ['DRUM 1', 'DRUM 2', 'DRUM 3', 'SNARE', 'CYMBAL', 'HIHAT'];
 // sends per voice: fx = echo (the engine's FX bus), dist = distortion, ring = ring mod, 0..100
 const mix = { fx: new Array(6).fill(0), dist: new Array(6).fill(0), ring: new Array(6).fill(0) };
 // (the distortion is a master insert in Elixir Mobile: mix is how much of the whole mix goes through it, 0 = bypassed)
-const FX3_0 = { echo: { pct: 100 }, dist: { type: 0, p: [70, 64, 80, 90], mix: 0 }, ring: { wave: 0, freq: 40 }, verb: { time: 30, decay: 90, tone: 64, early: 64 } };
+const FX3_0 = { echo: { pct: 100, sync: true, fine: 0, free: 0.25 }, dist: { type: 0, p: [70, 64, 80, 90], mix: 0 }, ring: { wave: 0, freq: 40 }, verb: { time: 30, decay: 90, tone: 64, early: 64 } };
 const fx3 = structuredClone(FX3_0);
 const fx3Snapshot = () => ({ params: structuredClone(fx3), ring: mix.ring.slice() });
 const stripsEl = $('strips');
@@ -7898,6 +7904,16 @@ function showDelay(v) {
   return `${Math.round(v / 10)}% ${Math.abs(nf / frac - 1) < 0.004 ? '' : '≈'}${name}`;
 }
 let delayPos = posOf(3 / 16);
+// the echo's time, two ways: synced to the tempo (the position above, on the musical lengths) or free (1..2000 ms, the same
+// knob, linear). The sync box and fine tune (±1%) are in fx3.echo, sent with the mix
+const echoSynced = () => fx3.echo.sync !== false;
+const echoFreeMs = (v) => Math.round(1 + 1.999 * v); // (v: the knob, 0..1000)
+const echoTime = () => Math.round((echoSynced() ? delayPos : (fx3.echo.free ?? 0.25)) * 1000);
+const echoTimeShow = (v) => (echoSynced() ? showDelay(v) : `${echoFreeMs(v)} ms`);
+function setEchoTime(v) {
+  if (echoSynced()) { delayPos = v / 1000; send({ type: 'delay', pos: delayPos }); }
+  else { fx3.echo.free = v / 1000; sendMix(); }
+}
 // a kit's own delay time (TIME and RANGE, as the firmware computes it) as a synced position
 function kitDelayPos() {
   const p1 = values[PAR.FX_P1] / 127, rng = values[PAR.FX_P2] / 127, pp = values[PAR.FX_DELAY_TYPE] === 1, fs = LXR.REAL_FS;
@@ -7943,8 +7959,8 @@ function syncFx() {
   const ke = $('k-echo'); ke.innerHTML = '';
   // detents on the musical lengths: straight notes are the major ticks, dotted and triplet the small ones
   const detents = NOTES.map(([fr, name]) => [Math.round(posOf(fr) * 1000), !/[.t]$/.test(name)]).filter(([v]) => v >= 0 && v <= 1000);
-  ke.append(dialKnob('time', { max: 1000, show: showDelay, detents, get: () => Math.round(delayPos * 1000),
-    set: (v) => { delayPos = v / 1000; send({ type: 'delay', pos: delayPos }); }, dflt: () => Math.round(posOf(3 / 16) * 1000) }),
+  ke.append(dialKnob('time', { max: 1000, show: echoTimeShow, detents, get: echoTime,
+    set: setEchoTime, dflt: () => Math.round(posOf(3 / 16) * 1000) }),
     knob('tone', PAR.FX_P3, true), knob('feedback', PAR.FX_P4, true), dialKnob('width', { max: 200, show: (v) => v + '%', detents: [[100, true]], jump: false, get: () => fx3.echo.pct,
       set: (v) => { fx3.echo.pct = v; sendMix(); }, dflt: () => FX3_0.echo.pct }));
   fxPick($('r-dist'), LXR.DIST_NAMES.map((n) => n.toLowerCase()), () => fx3.dist.type, (i) => { fx3.dist.type = i; sendMix(); });
@@ -9036,11 +9052,18 @@ const fx3P = (i) => ({ min: 0, max: 127, get: () => fx3.dist.p[i], set: (v) => {
 $('m-pp').addEventListener('change', () => { setValue(PAR.FX_DELAY_TYPE, $('m-pp').checked ? 1 : 0, true); setDirty(true); });
 mDraws.push(() => { $('m-pp').checked = values[PAR.FX_DELAY_TYPE] === 1; });
 fxF('m-fx-echo', 'send', fxSend('fx'));
-fxF('m-fx-echo', 'time', { min: 0, max: 1000, get: () => Math.round(delayPos * 1000), set: (v) => { delayPos = v / 1000; send({ type: 'delay', pos: delayPos }); },
-  show: (v) => showDelay(v).replace(/^\d+% /, ''), dflt: Math.round(posOf(3 / 16) * 1000) });
+fxF('m-fx-echo', 'time', { min: 0, max: 1000, get: echoTime, set: setEchoTime,
+  show: echoTimeShow, dflt: Math.round(posOf(3 / 16) * 1000) });
 fxF('m-fx-echo', 'tone', fxPar(PAR.FX_P3));
 fxF('m-fx-echo', 'feedback', fxPar(PAR.FX_P4));
 fxF('m-fx-echo', 'width', { min: 0, max: 200, get: () => fx3.echo.pct, set: (v) => { fx3.echo.pct = v; sendMix(); }, show: (v) => v + '%', dflt: FX3_0.echo.pct });
+// fine tune: ±1% of the echo time, in hundredths of a percent (synced or free)
+fxF('m-fx-echo', 'fine', { min: -100, max: 100, get: () => fx3.echo.fine || 0, set: (v) => { fx3.echo.fine = v; sendMix(); }, show: (v) => `${v > 0 ? '+' : ''}${(v / 100).toFixed(2)}%`, dflt: 0 });
+// the sync box: on, the time is on the musical lengths; off, free milliseconds (the same knob)
+$('m-sync').addEventListener('change', () => { fx3.echo.sync = $('m-sync').checked; sendMix(); setDirty(true); mDrawAll(); });
+mDraws.push(() => { $('m-sync').checked = echoSynced(); });
+// EVERYTHING: a new patch has the echo synced, with its fine tune randomised
+$('m-everything').addEventListener('click', () => { fx3.echo.sync = true; fx3.echo.fine = rIn(-100, 100); sendMix(); mDrawAll(); });
 // reverb (send 2, where the ring mod was; its sends are still mix.ring): send, time (the pre-delay), decay, tone (dark ..
 // bright) and early (the early reflections' level)
 fxF('m-fx-ring', 'send', fxSend('ring'));
@@ -10276,6 +10299,31 @@ requestAnimationFrame(mDepth);
 mSync(); mUndo(); mCompOn(); mDrawAll();
 </script>
 <script>
+// Elixir Desktop plugin: the app's HELP, adjusted for the plugin (no recording, it installs as a plugin, the echo's newest
+// controls). The page's help runs it on load (web/shim.js) and tools/build-web.mjs runs it for docs/help.html.
+function elixirPluginHelp(H) {
+  const tab = (id) => H.find((t) => t[0] === id);
+  const edit = (id, pairs) => { const t = tab(id); for (const [from, to] of pairs) t[2] = t[2].replace(from, to); };
+  edit('start', [
+    ['then <b>play</b> and <b>rec</b>', 'then <b>play</b>'],
+    [' <b>rec</b> records a WAV.', ''],
+    [/<p>\(On a screen under 1000 px wide[\s\S]*?<\/p>/, ''],
+  ]);
+  edit('fx', [[/<li><b>echo<\/b>:[\s\S]*?<\/li>/, '<li><b>echo</b>: send, time, fine, tone, feedback and width. With <b>sync</b> ticked the time sits on musical lengths; unticked it runs free, 1 to 2000 milliseconds, on the same fader. <b>fine</b> tunes the time by up to 1% either way. Tick <b>ping pong</b> to bounce it left and right.</li>']]);
+  edit('keys', [[' <b>enter</b> record, <b>l</b> record a loop.', '']]);
+  edit('more', [
+    [/<li>Install it as an app[\s\S]*?<\/li>/, ''],
+    [/<li>The version number is by the e;[\s\S]*?<\/li>/, '<li>The version number is on the cauldron.</li>'],
+  ]);
+  H.splice(H.indexOf(tab('rec')), 1);
+  H.splice(1, 0, ['daw', 'in your music software', `<ul><li>Load Elixir Desktop on an instrument track. It follows your song's tempo and its play and stop, locked to the bars. With the song stopped, its own <b>play</b> button runs it at its own tempo.</li>
+<li>MIDI notes C1 to F#1 (36 to 42) play drum 1, 2, 3, snare, cymbal, closed hat and open hat.</li>
+<li>MIDI CC 1 to 12 turn the knobs and CC 21 to 24 set the step sequencer shown; any channel. Choose other CCs in <b>options</b> › <b>user settings</b> › <b>midi</b>.</li>
+<li>The twelve knobs are the automation parameters Perf 1 to 12. Automate them, and moving a knob writes back. If you reassign a knob, its parameter follows.</li>
+<li>Your song saves the whole sound. Your own presets live with the plugin, shared by every copy of it. To bring presets from the web version, use <b>export presets</b> there and <b>import</b> here.</li>
+<li>To record it, record its track in your music software.</li></ul>`]);
+  return H;
+}
 // Elixir Desktop VST3, after the page's code: the player runs in the plugin (C++), not in an AudioWorklet.
 // Messages the page posts to the player go to the plugin; its step and level events come back the same shape.
 // The page also hands the plugin a snapshot of the whole sound now and then (the same fields as a preset), which
@@ -10358,6 +10406,7 @@ mSync(); mUndo(); mCompOn(); mDrawAll();
       else onEvent(ev);
     }
   });
+  elixirPluginHelp(HELP);
   emit({ t: 'ready' });
 })();
 </script>

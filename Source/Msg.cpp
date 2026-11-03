@@ -71,7 +71,10 @@ bool parseMsg(const juce::var& v, Msg& m) {
             if (m.hasVerb) { static const char* vk[4] = { "time", "decay", "tone", "early" }; for (int i = 0; i < 4; i++) m.verb[i] = num(r[vk[i]]); }
             std::fill(m.sendD, m.sendD + 6, 0.0f); nums(v["sendD"], m.sendD, 6);
             std::fill(m.sendR, m.sendR + 6, 0.0f); nums(v["sendR"], m.sendR, 6);
-            m.echoPct = num(v["echo"]["pct"], 100);
+            const juce::var& ec = v["echo"];
+            m.echoPct = num(ec["pct"], 100);
+            m.echoSync = !(ec.hasProperty("sync") && ec["sync"].isBool() && !(bool) ec["sync"]);
+            m.echoFree = num(ec["free"], 0.25); m.echoFine = num(ec["fine"], 0);
         }
         return true;
     }

@@ -2,7 +2,7 @@
 
 Storage::Storage() {
     file = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-               .getChildFile("Application Support/Johnny/Elixir Desktop/storage.json");
+               .getChildFile(ELIXIR_DATA_DIR "/storage.json");
     data = juce::JSON::parse(file);
     if (!data.isObject()) data = juce::var(new juce::DynamicObject());
 }

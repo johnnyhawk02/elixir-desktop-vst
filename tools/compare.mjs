@@ -5,10 +5,11 @@
 import { readFileSync, writeFileSync, readdirSync, mkdtempSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
+import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
-const APP = join(homedir(), 'Developer/elixir-desktop');
-const BIN = new URL('../build/ElixirDesktop_Compare_artefacts/Release/ElixirDesktop_Compare', import.meta.url).pathname;
+const APP = process.env.ELIXIR_APP || join(homedir(), 'Developer/elixir-desktop');
+const BIN = fileURLToPath(new URL('../build/ElixirDesktop_Compare_artefacts/Release/ElixirDesktop_Compare' + (process.platform === 'win32' ? '.exe' : ''), import.meta.url));
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const nScen = Number(args[0] || 20), seed0 = Number(args[1] || 1);
 
@@ -41,7 +42,7 @@ function scenario(seed) {
   };
   const mix = () => ({ type: 'mix', master: { comp: chance(0.8), thresh: -30 + ri(30), ratio: 1 + ri(8), attack: 1 + ri(30), release: 20 + ri(300),
       makeup: ri(8), duck: rnd() * 0.8, duckRelease: 40 + ri(300), duckFx: chance(0.3), duckOn: chance(0.7), space: chance(0.4) ? ri(101) : 0 },
-    fx: Array.from({ length: 6 }, () => (chance(0.5) ? rnd() : 0)), echo: { pct: ri(201) },
+    fx: Array.from({ length: 6 }, () => (chance(0.5) ? rnd() : 0)), echo: { pct: ri(201), sync: !chance(0.4), free: rnd(), fine: chance(0.5) ? ri(201) - 100 : 0 },
     dist: { type: ri(3), p: [ri(128), ri(128), ri(128), ri(128)], mix: chance(0.4) ? ri(101) : 0 }, verb: { time: ri(128), decay: ri(128), tone: ri(128), early: ri(128) },
     sendD: Array.from({ length: 6 }, () => 0), sendR: Array.from({ length: 6 }, () => (chance(0.3) ? rnd() : 0)) });
   const first = [{ type: 'kit', values: kit }, mix(), { type: 'delay', pos: rnd() }, { type: 'rushSet', set: {} }];

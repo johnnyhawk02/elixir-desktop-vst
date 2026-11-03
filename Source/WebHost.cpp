@@ -1,11 +1,23 @@
 #include "WebHost.h"
 #include "PluginProcessor.h"
 #include "BinaryData.h"
-#include "WebDialogs.h"
+#if JUCE_MAC
+ #include "WebDialogs.h"
+#endif
 
 WebHost::WebHost(ElixirProcessor& p) : proc(p) {
+    // WebView2 needs a folder it can write to (the host's own folder usually isn't)
+    const juce::File dataDir = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile(ELIXIR_DATA_DIR);
     auto opts = juce::WebBrowserComponent::Options()
-                    .withBackend(juce::WebBrowserComponent::Options::Backend::defaultBackend)
+                    .withWinWebView2Options(juce::WebBrowserComponent::Options::WinWebView2()
+                                                .withUserDataFolder(dataDir.getChildFile("WebView2")))
+                    .withBackend(
+                       #if JUCE_WINDOWS
+                        juce::WebBrowserComponent::Options::Backend::webview2
+                       #else
+                        juce::WebBrowserComponent::Options::Backend::defaultBackend
+                       #endif
+                        )
                     .withNativeIntegrationEnabled()
                     .withKeepPageLoadedWhenBrowserIsHidden()
                     .withResourceProvider([this](const juce::String& url) { return serve(url); })
@@ -49,7 +61,11 @@ void WebHost::fromPage(const juce::var& v) {
                              [text](const juce::FileChooser& fc) { if (fc.getResult() != juce::File()) fc.getResult().replaceWithText(text); });
     }
     else if (t == "log" || t == "ready") {
+        #if JUCE_MAC
         const juce::File log = juce::File::getSpecialLocation(juce::File::userHomeDirectory).getChildFile("Library/Logs/Johnny/Elixir Desktop.log");
+       #else
+        const juce::File log = juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory).getChildFile(ELIXIR_DATA_DIR "/elixir-desktop.log");
+       #endif
         log.getParentDirectory().createDirectory();
         log.appendText(juce::Time::getCurrentTime().toString(true, true) + " " + (t == "ready" ? juce::String("page ready") : v["s"].toString()) + "\n");
     }
@@ -57,7 +73,9 @@ void WebHost::fromPage(const juce::var& v) {
 }
 
 void WebHost::timerCallback() {
+   #if JUCE_MAC
     if (!dialogs) if (auto* peer = browser->getPeer()) dialogs = addWebDialogs(peer->getNativeHandle());
+   #endif
     juce::Array<juce::var> batch;
     const bool host = proc.hostPlaying.load();
     if (host != hostWas) {

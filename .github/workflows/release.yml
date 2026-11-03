@@ -1,0 +1,75 @@
+# Builds every format on Mac, Windows and Linux. A tag v* publishes them as a GitHub Release, so the links
+# releases/latest/download/ElixirDesktop-<os>-<format>.<zip|tar.gz> always give the newest version.
+name: build
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-14, name: mac }
+          - { os: windows-2022, name: windows }
+          - { os: ubuntu-22.04, name: linux }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Linux libraries
+        if: matrix.name == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libjack-jackd2-dev ladspa-sdk libcurl4-openssl-dev libfreetype6-dev \
+            libfontconfig1-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev \
+            libxrender-dev libglu1-mesa-dev mesa-common-dev libgtk-3-dev libwebkit2gtk-4.1-dev
+      - name: WebView2 SDK
+        if: matrix.name == 'windows'
+        shell: pwsh
+        run: nuget install Microsoft.Web.WebView2 -Version 1.0.1901.177 -OutputDirectory "$env:USERPROFILE/AppData/Local/PackageManagement/NuGet/Packages"
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --config Release --target ElixirDesktop_All --parallel 4
+      - name: Build CLAP
+        run: cmake --build build --config Release --target ElixirDesktop_CLAP --parallel 4
+      - name: Check the sound against the app
+        continue-on-error: true
+        run: |
+          git clone --depth 1 https://github.com/johnnyhawk02/elixir-desktop.git app
+          cmake --build build --config Release --target ElixirDesktop_Compare --parallel 4
+          ELIXIR_APP="$PWD/app" node tools/compare.mjs 10
+      - name: Check the Audio Unit
+        if: matrix.name == 'mac'
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R "build/ElixirDesktop_artefacts/Release/AU/Elixir Desktop.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          auval -v aumu Elxd Jhny
+      - name: Package
+        run: tools/package.sh ${{ matrix.name }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: dist/*
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "Elixir Desktop ${GITHUB_REF_NAME#v}" --notes-file docs/RELEASE.md

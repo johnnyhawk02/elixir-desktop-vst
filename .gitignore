@@ -2,3 +2,5 @@
 **/proto/renders/
 *.wav
 .DS_Store
+/dist/
+/app/
