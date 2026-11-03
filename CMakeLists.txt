@@ -8,7 +8,7 @@ set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "") # Apple Silicon and 
 if(WIN32)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>") # no Visual C++ runtime needed on the player's PC
 endif()
-project(ElixirDesktop VERSION 1.1.0 LANGUAGES C CXX)
+project(ElixirDesktop VERSION 1.1.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 option(ELIXIR_INSTALL "copy the VST3 and AU into the Mac's plug-in folders after building" OFF)
@@ -29,7 +29,7 @@ elseif(UNIX)
 endif()
 
 juce_add_plugin(ElixirDesktop
-    VERSION 1.1.0
+    VERSION 1.1.1
     COMPANY_NAME "Johnny"
     BUNDLE_ID "com.johnny.elixirdesktop"
     PLUGIN_MANUFACTURER_CODE Jhny

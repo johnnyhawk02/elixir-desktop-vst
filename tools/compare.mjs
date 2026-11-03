@@ -2,7 +2,7 @@
 // C++ twin (ElixirDesktop_Compare) on the same random message scripts, and compares their output sample for sample.
 //   node tools/compare.mjs [scenarios=20] [seed=1] [--keep]
 // Build the C++ side first: cmake --build build --target ElixirDesktop_Compare
-import { readFileSync, writeFileSync, readdirSync, mkdtempSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +14,7 @@ const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const nScen = Number(args[0] || 20), seed0 = Number(args[1] || 1);
 
 // the engine and player as one classic script, the way build.mjs bundles them for the page
-const read = (f) => readFileSync(join(APP, f), 'utf8');
+const read = (f) => readFileSync(join(APP, f), 'utf8').replace(/\r\n/g, '\n'); // (a Windows checkout has CRLF)
 const strip = (src) => src.replace(/^import[\s\S]*?from\s+'[^']+';\n/gm, '').replace(/^export \{[^}]*\};\n/gm, '').replace(/^export (const|function|class) /gm, '$1 ');
 const engine = ['lxr-tables.js', 'lxr-ui-data.js', 'lxr-clicks.js', 'lxr.js'].map((f) => strip(read(f))).join('\n');
 const names = ['LxrEngine', 'PAR', 'BLOCK', 'REAL_FS', 'MIXER_ROUTING_FX_BUS', 'FX_DISTORTION', 'FX_RING', 'FX_DELAY', 'FxBus', 'Rng', 'ReverbBus'];
@@ -95,4 +95,4 @@ for (let k = 0; k < nScen; k++) {
   console.log(`${ok ? 'ok ' : 'BAD'} #${k} rate ${sc.rate} ${(js.length / 2 / sc.rate).toFixed(1)} s peak ${peak.toFixed(3)} max diff ${maxd.toExponential(2)}${firstBad >= 0 ? ` first at frame ${firstBad >> 1} (${((firstBad >> 1) / sc.rate).toFixed(3)} s)` : ''}${cpp.length !== js.length ? ` LENGTH ${cpp.length} vs ${js.length}` : ''}`);
 }
 console.log(bad ? `${bad} of ${nScen} differ` : `all ${nScen} match`);
-if (!process.argv.includes('--keep')) execFileSync('rm', ['-rf', dir]); else console.log(dir);
+if (!process.argv.includes('--keep')) rmSync(dir, { recursive: true, force: true }); else console.log(dir);
