@@ -22,6 +22,12 @@ The quickest way: paste this into Terminal. It installs the newest VST3, Audio U
 curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash
 ```
 
+Only want one format? Add it at the end after `bash -s --` (any of `vst3`, `au`, `clap`, `app`):
+
+```
+curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash -s -- vst3
+```
+
 Or install by hand: unzip, then move the file to:
 
 | Format | Folder |

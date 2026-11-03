@@ -3,6 +3,11 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash
 #
+# To install only some formats, name them after "bash -s --" (any of vst3, au, clap, app):
+#
+#   curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash -s -- vst3
+#   curl -fsSL https://raw.githubusercontent.com/johnnyhawk02/elixir-desktop-vst/main/install-mac.sh | bash -s -- au clap
+#
 # Files fetched with curl get no quarantine flag, so macOS doesn't block the unsigned plugin.
 # Nothing needs sudo: plugins go in your own Library, the app in /Applications
 # (or ~/Applications if /Applications isn't writable).
@@ -33,12 +38,16 @@ install_one() { # zip-suffix bundle-name destination-folder
   echo "  installed $dest/$bundle"
 }
 
-install_one vst3       "Elixir Desktop.vst3"      "$PLUGINS/VST3"
-install_one au         "Elixir Desktop.component" "$PLUGINS/Components"
-install_one clap       "Elixir Desktop.clap"      "$PLUGINS/CLAP"
-install_one standalone "Elixir Desktop.app"       "$APPS"
-
-# Make Logic and GarageBand notice the new Audio Unit.
-killall -9 AudioComponentRegistrar 2>/dev/null || true
+[ $# -gt 0 ] || set -- vst3 au clap app   # no arguments: install everything
+for f in "$@"; do
+  case "$(echo "$f" | tr '[:upper:]' '[:lower:]')" in
+    vst3|vst)                 install_one vst3       "Elixir Desktop.vst3"      "$PLUGINS/VST3" ;;
+    au|component|audiounit)   install_one au         "Elixir Desktop.component" "$PLUGINS/Components"
+                              killall -9 AudioComponentRegistrar 2>/dev/null || true ;; # so Logic and GarageBand see it
+    clap)                     install_one clap       "Elixir Desktop.clap"      "$PLUGINS/CLAP" ;;
+    app|standalone)           install_one standalone "Elixir Desktop.app"       "$APPS" ;;
+    *) echo "Unknown format: $f (use vst3, au, clap or app)" >&2; exit 1 ;;
+  esac
+done
 
 echo "Done. Rescan plugins in your music software, or open Elixir Desktop from $APPS."
